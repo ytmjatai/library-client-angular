@@ -1,0 +1,14 @@
+:host {
+  display: block;
+  height: 100%;
+  ::ng-deep {
+    mat-drawer-container {
+      height: 100%;
+    }
+    mat-drawer {
+      width: 300px;
+      padding: 10px;
+      // border: 1px solid #ccc;
+    }
+  }
+}

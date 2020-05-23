@@ -1,0 +1,19 @@
+:host {
+  .example-container {
+    height: 100%;
+    overflow: auto;
+  }
+
+  table {
+    width: 100%;
+  }
+  .thumb-td {
+    width: 100px;
+    height: 150px;
+  }
+  img.thumb {
+    margin-top: 4px;
+    width: 100px;
+    height: 150px;
+  }
+}

@@ -1,0 +1,73 @@
+<h1 mat-dialog-title>{{title}}</h1>
+<div mat-dialog-content>
+  <form #myForm="ngForm">
+    <p>
+      <mat-form-field class="w-100p">
+        <mat-label>ISBN</mat-label>
+        <input matInput [(ngModel)]="book.ISBN" name="ISBN" required #ISBN="ngModel" placeholder="请输入国际标准书号（ISBN）">
+        <button mat-button *ngIf="book.ISBN" matSuffix mat-icon-button aria-label="Clear" (click)="book.ISBN=''">
+          <mat-icon>close</mat-icon>
+        </button>
+        <mat-error *ngIf="ISBN.invalid">ISBN为必填项</mat-error>
+      </mat-form-field>
+    </p>
+    <p>
+      <mat-form-field class="w-100p">
+        <mat-label>书籍名称</mat-label>
+        <input matInput [(ngModel)]="book.name" name="bookname" required #bookname="ngModel" placeholder="请输入书籍名称">
+        <button mat-button *ngIf="book.name" matSuffix mat-icon-button aria-label="Clear" (click)="book.name=''">
+          <mat-icon>close</mat-icon>
+        </button>
+        <mat-error *ngIf="bookname.invalid">书籍名称为必填项</mat-error>
+
+      </mat-form-field>
+    </p>
+    <p>
+      <mat-form-field class="w-100p">
+        <mat-label>作者</mat-label>
+        <input matInput [(ngModel)]="book.author" name="author" required #author="ngModel" placeholder="请输入书籍名称">
+        <button mat-button *ngIf="book.author" matSuffix mat-icon-button aria-label="Clear" (click)="book.author=''">
+          <mat-icon>close</mat-icon>
+        </button>
+        <mat-error *ngIf="author.invalid">作者为必填项</mat-error>
+      </mat-form-field>
+    </p>
+
+    <p>
+      <dx-drop-down-box class="dropBox" #dropDownBox [value]="book.category?book.category[0]?.name:''"
+        placeholder="--请选择分类--" [showClearButton]="false" [showDropDownButton]="true"
+        (onValueChanged)="categoryValueChange($event.value)">
+        <dxi-button *ngIf="book.category && book.category.length" name="clearD"
+          [options]="{ stylingMode: 'text', icon: 'close', onClick: clearCate}"></dxi-button>
+        <dxi-button name="dropDown"></dxi-button>
+        <div *dxTemplate="let data of 'content'">
+          <dx-tree-view #treeView [dataSource]="categorys" dataStructure="plain" selectionMode="single"
+            parentIdExpr="parentId" keyExpr="_id" displayExpr="name" [selectByClick]="true"
+            (onContentReady)="initTreeView($event.component)" (onItemClick)="itemClick(dropDownBox)"
+            (onItemSelectionChanged)="categoryChange($event.itemData)">
+          </dx-tree-view>
+        </div>
+      </dx-drop-down-box>
+    </p>
+    <p>
+      <mat-form-field class="w-100p summary">
+        <mat-label>概述</mat-label>
+        <textarea rows="4" matInput [(ngModel)]="book.summary" name="summary"></textarea>
+      </mat-form-field>
+    </p>
+
+    <p>
+      <dx-file-uploader [elementAttr]="{title: '仅支持 jpg、jpeg、png', class: 'upload-btn'}" name="file"
+        accept=".png, .jpeg, .jpg" [allowedFileExtensions]="['.jpg', '.jpeg', '.gif', '.png']"
+        [selectButtonText]="'添加图片'" labelText="" accept="image/*" [(value)]="files" uploadMode="useButtons"
+        [chunkSize]="200000" [multiple]="true" [showFileList]="true">
+      </dx-file-uploader>
+    </p>
+
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button class="rounded-0" mat-flat-button color="primary" (click)="handleSumbit()" [disabled]="myForm.invalid">确定
+  </button>
+  <button mat-stroked-button (click)="handleCancel()" cdkFocusInitial>取消</button>
+</div>

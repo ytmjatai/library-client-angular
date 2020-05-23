@@ -1,0 +1,52 @@
+<div class="example-container mat-elevation-z8">
+  <mat-toolbar>
+    <button mat-icon-button title="add dd" (click)="handleAdd()">
+      <mat-icon>add</mat-icon>
+    </button>
+
+    <button mat-icon-button title="delete dd" (click)="handleDelMany()">
+      <mat-icon>delete</mat-icon>
+    </button>
+  </mat-toolbar>
+
+  <table mat-table [dataSource]="dataSource">
+    <ng-container matColumnDef="select">
+      <th mat-header-cell *matHeaderCellDef width="70">
+        <mat-checkbox (change)="masterToggle()" [checked]="selection.hasValue() && isAllSelected()"
+          [indeterminate]="selection.hasValue() && !isAllSelected()">
+        </mat-checkbox>
+      </th>
+      <td mat-cell *matCellDef="let book">
+        <mat-checkbox (change)="selection.toggle(book)" [checked]="selection.isSelected(book)">
+        </mat-checkbox>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="thumbnail">
+      <th mat-header-cell *matHeaderCellDef width="100" class="text-center"> 缩略图</th>
+      <td mat-cell *matCellDef="let book"> <img class="thumb"
+          [src]="book.thumbnail ? serverUrl + book.thumbnail: defaultThumb"> </td>
+    </ng-container>
+    <mat-text-column name="author" headerText="作者" justify="center"></mat-text-column>
+    <mat-text-column name="name" headerText="书名" justify="center"></mat-text-column>
+    <ng-container matColumnDef="category">
+      <th mat-header-cell *matHeaderCellDef class="text-center"> 分类 </th>
+      <td mat-cell *matCellDef="let book" class="text-center"> {{book.category[0]?.name?book.category[0].name:'-'}}
+      </td>
+    </ng-container>
+    <mat-text-column name="summary" headerText="概述"></mat-text-column>
+    <ng-container matColumnDef="_id">
+      <th mat-header-cell *matHeaderCellDef width="100"> 操作</th>
+      <td mat-cell *matCellDef="let book">
+        <button mat-icon-button color="basic">
+          <mat-icon (click)="handleEdit(book)">edit</mat-icon>
+        </button>
+        <button mat-icon-button (click)="handleDel(book)">
+          <mat-icon>delete</mat-icon>
+        </button>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+  <mat-paginator [pageSizeOptions]="[10, 20]" itemsPerPageLabel="第页" firstPageLabel="fpl"
+    (page)="handlePageChange($event)" showFirstLastButtons></mat-paginator>
+</div>
